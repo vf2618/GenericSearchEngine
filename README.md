@@ -7,7 +7,7 @@ one can also add the libraries through pip install
 libraries needed: flask, bs4, sqlite3
 
 
-This is split into two parts the Generic Crawler, Generic_Crawler_v1.py
+This is split into two parts the Generic Crawler, Generic_Crawler.py
 And the Search Application, app.py
 
 
