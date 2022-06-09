@@ -1,0 +1,177 @@
+<html>
+    <head>
+        <style>
+                body {background-color: whitesmoke; max-width: 1000px;
+            margin:auto; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;}
+                h1   {color: black; text-align: center; margin-left: 20;}
+                h2 {font-size: 14; font-weight: normal; text-align: left; margin-bottom:12; margin-left: 40;margin-bottom: 5}
+                h3 {font-weight: normal; text-align: center; margin-bottom:12; margin-left: 40;margin-bottom: 5}
+                h4 {font-size: 28; margin-bottom:12; margin-left: 40;margin-bottom: 5; margin-right: 100;}
+                form    {color: black; text-align: center}
+                b   {font-weight: bold; } 
+                a   {text-decoration: none; color:black;}
+                h5 {margin-top:3; margin-bottom:0;margin-left: 40; font-size:10}
+                h6 {font-weight:normal; font-size: 14; margin-top:0; margin-bottom:0;margin-left: 40; margin-right: 300;}
+                form{display: inline-block}
+                input[type=submit] {
+                                    display: inline-block;
+                                    padding:5px 15px; 
+                                    background:#ccc;
+                                    border:10px grey;
+                                    cursor:pointer;
+                                    -webkit-border-radius: 4px;
+                                    border-radius: 4px; 
+                                    border-width: 5px red;
+                                    border: 1px solid #333
+                                }
+                input[type=text]  {
+                    
+                                    width: 90%;
+                                    font-size: 16;
+                                    padding: 0.8rem 0.5rem;
+                                    border: 1px solid #333;
+                                    font-family: inherit;
+                                    /** for the dropdown indicator */
+                                    appearance: none;
+                                    background-repeat: no-repeat;
+                                    background-position: right 1rem center;
+                                    background-size: 1em;
+                }
+                select {
+                                    display: inline-block;
+                                    width: 200;
+                                    font-size: 12;
+                                    padding: 0.8rem 0.5rem;
+                                    border: 1px solid #333;
+                                    font-family: inherit;
+                                    /** for the dropdown indicator */
+                                    appearance: none;
+                                    /** background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); */
+                                    background-repeat: no-repeat;
+                                    background-position: right 1rem center;
+                                    background-size: 1em;
+                                }
+
+                                img {
+                                    margin-right: 40;
+                                    margin-left: 20;
+                                    border-radius: 4px;
+                                    padding: 5px;
+                                    }
+            html {background-color: white}
+        </style>
+    </head>
+
+    <body>
+
+
+        <h1> 
+            GENERIC - your search engine
+        </h1>
+
+        <p>
+
+        <form action="/" method="POST">
+            <h3>
+                Search: <input type="text" name="text" value="{{dbresults[1]}}" size=50 > <br/><br/>
+                
+
+            </h3>
+
+            <h3>
+                Select the categorie(s) to be searched: 
+                &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp; &ensp;
+                &ensp; &ensp; 
+                <select name='category_selection' class=" form-control" multiple="multiple">
+                <option value="all" SELECTED>all</option>
+                {% for category in dbresults[6] %}
+                <option value= "{{category}}" >{{category}}</option>
+                {% endfor %}
+
+            </select>
+            <br>
+            <br>
+            <br>
+            <h3>
+            <input type="submit" value="Search" />
+            </h3>
+            
+            <!-- <br>
+            Select the cuisine(s) to be searched:
+            <select name='cuisine_selection' class=" form-control" multiple="multiple">
+                <option value="all" SELECTED>all</option>
+                {% for cuisine in dbresults[7] %}
+                <option value= "{{cuisine}}" >{{cuisine}}</option>
+                {% endfor %}
+            </select> -->
+            </h2>
+        </form>
+        </p>
+
+        <h5>
+            retrieving results took: {{dbresults[8]}} ms
+        </h5>
+
+        <h5>
+            categories searched: {{dbresults[2]}}
+        </h5>
+
+        <!-- <h5>
+            cuisine searched: {{dbresults[5]}}
+        </h5> -->
+
+        <h5>
+            number of results: {{dbresults[4]}}
+        </h5>
+        <br>
+        <!-- <h2>
+        <form action="/" method="GET">
+            <input type="submit" value="Back to main search" />
+        </form>
+        </h2> -->
+        <hr>
+
+            {% for value in dbresults[0] %}
+            <a href = {{value[1]}}>
+                <img src={{value[2]}} onerror="this.onerror=null;this.src='https://ichef.bbci.co.uk/images/ic/320xn/p08jflhz.png';"
+                width=160" height="90", align="right" appearance=none />
+            </a>
+            <h4>
+                <a href = {{value[1]}} target="_blank"> {{value[0]}}</a>
+            </h4>
+            <h5>by {{value[3]|safe}}</h5>
+            <br>
+            {% if value[8] == None %}
+                {% else %}     
+                    <h6>
+                        
+                        {{value[8]|safe}}
+                    </h6>
+                    <br>
+                {% endif %}
+            
+
+            <h5>
+            <a href = {{value[1]}} target="_blank"> {{value[1]}} </a>
+            </h5>
+            <h5> 
+                rating: {% if value[5] == 0 %}
+                Be the first to rate
+                    {% else %}
+                        {{'%0.2f'| format(value[5]|float)}}
+                    {% endif %}
+            </h5>
+            <h5> 
+                number of ratings: {{value[6]|safe}}
+            </h5>
+            <h5> 
+                Preperation time: {{value[7]|safe}}
+            </h5>
+            <h5> 
+                BM25 rank: {{'%0.2f'| format(value[4]|float)}}
+            </h5>
+
+            <hr>
+            {% endfor %}
+    </body>
+</html>
