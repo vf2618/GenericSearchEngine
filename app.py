@@ -1,9 +1,20 @@
+#################
+#################
+# install required packages sqlite3, flask
+################
+################
+
+# running this file will host the webpage with the localhost shown.
+
+
+
 ###################
-# to run app  through local host enter into concole:
-# flask run --host= [146.169.218.212]
+# to run app in local network, first find the IP of your computer
+# then turn of the debug mode in line 147
+# flask run --host= [192.168.1.23]
 # ######################
 # ip address is local from computer and varies 
-# then accessible through, for example 146.169.218.212:5000
+# then accessible through, for example 192.168.1.23:5000
 
 
 from flask import Flask, render_template, request
@@ -11,7 +22,7 @@ from flask import Flask, render_template, request
 # we pass in name to determine the route path
 app = Flask(__name__)
 
-database = "bbc_food_sample.db"
+database = "bbc_food_sample_100.db"
 
 
 
