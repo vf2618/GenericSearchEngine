@@ -163,35 +163,6 @@ def set_new_ids(database):
 
     return new_domain_id, new_URL_id
 
-def wrong():
-    
-    # # if it doesn't exist yet, create the table and add the links to the table
-    # if ('virtual_data_table',) not in result:
-    #     c.execute('CREATE VIRTUAL TABLE virtual_data_table USING fts5 (link,heading,description,document, category, cuisine, rating, rating_number, chef, prep, keywords, image_link, domain_id)')
-    #     conn.commit()
-    #     c.execute('''
-    #                 INSERT INTO link_data_virtual_fts5
-    #                 SELECT links_from_sitemap.link, link_data.heading, link_data.description, link_data.document, link_data.category, link_data.cuisine, link_data.rating, link_data.rating_number, link_data.chef, link_data.prep, link_data.keywords, link_data.image_link ,link_data.domain_id
-    #                 FROM link_data 
-    #                 INNER JOIN links_from_sitemap ON link_data.link_id = links_from_sitemap.link_id''')
-    #     conn.commit()
-
-    # #else don't add
-    # else:
-    #     c.execute('DROP TABLE link_data_virtual_fts5')
-    #     conn.commit()
-        
-    #     c.execute('CREATE VIRTUAL TABLE link_data_virtual_fts5 USING fts5 (link,heading,description, document, category, cuisine, rating, rating_number, chef, prep, keywords, image_link, domain_id)')
-    #     conn.commit()
-    #     c.execute('''
-    #                 INSERT INTO link_data_virtual_fts5
-    #                 SELECT links_from_sitemap.link, link_data.heading, link_data.description, link_data.document, link_data.category, link_data.cuisine, link_data.rating, link_data.rating_number, link_data.chef, link_data.prep, link_data.keywords, link_data.image_link ,link_data.domain_id
-    #                 FROM link_data 
-    #                 INNER JOIN links_from_sitemap ON link_data.link_id = links_from_sitemap.link_id''')
-    #     conn.commit()
-        
-    #     print("Virtual table already exists")
-    return 1
 
 def update_to_virtual_table(database):
     
@@ -299,18 +270,18 @@ def obtain_newURLs_from_URL(soup, domain_id):
             # requires!!!: => domain_URL = c.execute (SELECT domain_URL .....)
             # then:
 
-            # elif url[0] == "/":
-            #     import sqlite3
-            #     conn = sqlite3.connect(database)
-            #     c = conn.cursor()
-            #     result = c.execute("SELECT domain_URL FROM domains WHERE domain_id=:domain_id",{"domain_id": domain_id})
-            #     domain_url = result.fetchone()[0]
-            #     if url[0:2] == "//":
-            #         combined_url = "https:" + url
-            #         storage.update({combined_url:1})
-            #     else:
-            #         combined_url = domain_url + url
-            #         storage.update({combined_url:1})
+            elif url[0] == "/":
+                import sqlite3
+                conn = sqlite3.connect(database)
+                c = conn.cursor()
+                result = c.execute("SELECT domain_URL FROM domains WHERE domain_id=:domain_id",{"domain_id": domain_id})
+                domain_url = result.fetchone()[0]
+                if url[0:2] == "//":
+                    combined_url = "https:" + url
+                    storage.update({combined_url:1})
+                else:
+                    combined_url = domain_url + url
+                    storage.update({combined_url:1})
             
         #could implement something for the links on eg:
         #https://www.planecheck.com
@@ -579,7 +550,7 @@ def access_robots(domain_URL):
     # I only want one crawl_delay value!
     crawl_delays = result_data_set["Crawl_Delay"]
     if len(crawl_delays) == 0:
-        crawl_delays = 0
+        crawl_delays = default_crawl_delay
     elif len(crawl_delays) == 1:
         crawl_delays = float(crawl_delays[0])
     elif len(crawl_delays) > 1:
